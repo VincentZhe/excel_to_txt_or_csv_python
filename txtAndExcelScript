@@ -1,0 +1,9 @@
+# convert excel to txt file
+import pandas as pd
+df = pd.read_excel("retail.xls")
+dwith open('test.txt', 'w') as file:
+    df.to_string(file, index=False)
+    
+# convert excel to csv file
+df.to_csv("test.csv")
+    
