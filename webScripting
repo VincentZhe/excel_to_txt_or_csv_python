@@ -1,0 +1,84 @@
+import requests
+from bs4 import BeautifulSoup
+
+
+webPage1 = requests.get("https://pythonizing.github.io/data/real-estate/rock-springs-wy/LCWYROCKSPRINGS/t=0&s=0.html")
+con1 = webPage1.content
+con1
+
+
+soup1 = BeautifulSoup(con1, "html.parser")
+soup1
+
+
+allFirst = soup1.find_all("div", {"class":"propertyRow"})
+# find out how many pages
+pageNum = soup1.find_all("a", {"class":"Page"})[-1].text
+type(pageNum)
+
+
+#Store all dic to list, before give the empty list
+list=[]
+# Grab all pages
+for page in range(0, int(pageNum)*10, 10):
+    print("https://pythonizing.github.io/data/real-estate/rock-springs-wy/LCWYROCKSPRINGS/t=0&s=" + str(page) + ".html")
+    # get the content
+    allPage = requests.get("https://pythonizing.github.io/data/real-estate/rock-springs-wy/LCWYROCKSPRINGS/t=0&s=" + str(page) + ".html")
+    # get all content
+    allCon = allPage.content
+    allSoup = BeautifulSoup(allCon, "html.parser")
+    allFirst = allSoup.find_all("div", {"class":"propertyRow"})
+    # Get all prices in the first page
+    for item in allFirst:
+        # create a dic to store all info
+        dic={}
+
+
+    #     print(item.find_all("span", {"class":"propAddressCollapse"})[0].text)
+        dic["Address"] = item.find_all("span", {"class":"propAddressCollapse"})[0].text
+    #     print(item.find_all("span", {"class":"propAddressCollapse"})[1].text)
+        dic["Locality"] = item.find_all("span", {"class":"propAddressCollapse"})[1].text
+    #     print(item.find("h4", {"class":"propPrice"}).text.replace("\n", "").replace(" ", ""))
+        dic["Price"] = item.find("h4", {"class":"propPrice"}).text.replace("\n", "").replace(" ", "")
+        try:
+    #         print(item.find("span", {"class":"infoBed"}).find("b").text)
+            dic["Beds"] = item.find("span", {"class":"infoBed"}).find("b").text
+        except:
+    #         print(None)
+            dic["Beds"] = None
+        try:
+    #         print(item.find("span", {"class":"infoSqFt"}).find("b").text)
+            dic["Area"] = item.find("span", {"class":"infoSqFt"}).find("b").text
+        except:
+    #         print(None)
+            dic["Area"] = None
+        try:
+    #         print(item.find("span", {"class":"infoValueFullBath"}).find("b").text)
+            dic["Full Baths"] = item.find("span", {"class":"infoValueFullBath"}).find("b").text
+        except:
+    #         print(None)
+            dic["Full Baths"] = None
+        try:
+    #         print(item.find("span", {"class":"infoValueHalfBath"}).find("b").text)
+            dic["Half Baths"] = item.find("span", {"class":"infoValueHalfBath"}).find("b").text
+        except:
+    #         print(None)
+            dic["Half Baths"] = None
+        # get the specific elements from div
+        for columnGroup in item.find_all("div", {"class":"columnGroup"}):
+            for featureGroup, featureName in zip(columnGroup.find_all("span", {"class":"featureGroup"}), columnGroup.find_all("span", {"class":"featureName"})):
+                if "Lot Size" in featureGroup.text:
+    #                 print(featureName.text)
+                    dic["Lot Size"] = featureName.text
+        list.append(dic)
+    #     print("")
+
+
+    # put list to dataframe
+import pandas as pd
+df = pd.DataFrame(list)
+df
+
+
+# export the dataframe
+df.to_csv("DataOutPut.csv")
