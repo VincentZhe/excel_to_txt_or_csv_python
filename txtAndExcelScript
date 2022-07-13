@@ -8,6 +8,25 @@ df = pd.read_excel("retail.xls")
 type("REF_DATE")
 
 
+import pandas as pd
+df = pd.read_excel("Copy of SABRINA- WALMART 133.xlsx", header = 1)
+df = df.fillna(0)
+# To check how many category comments
+# df = df[df['UPC'].str.contains('Category')]
+df = df.drop([df.index[0],df.index[18], df.index[37], df.index[93], df.index[96], df.index[102], df.index[137], df.index[269], df.index[343] ])
+# remove desription
+df = df.drop('DESCRIPTION', axis =1 )
+#remove size
+df = df.drop('SIZE', axis =1 )
+#Combine Store and price
+for i in df.index:
+    df['RETAIL'][i] = '50133'+df['RETAIL'][i]
+with open('test.txt', 'w') as file:
+    df.to_string(file, index=False)
+    
+# # convert excel to csv file
+# df.to_csv("test.csv")
+
 with open('test.txt', 'w') as file:
     df.to_string(file, index=False)
     
