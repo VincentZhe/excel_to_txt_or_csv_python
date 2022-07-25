@@ -33,3 +33,35 @@ with open('test.txt', 'w') as file:
 # convert excel to csv file
 df.to_csv("test.csv")
     
+    
+############################################################################    
+# Newest
+import pandas as pd
+df = pd.read_excel("YIG 861 - Balance - July 25 copy.xlsx", header = 1)
+df = df.fillna(0)
+df
+
+# df = df.drop([df.index[0],df.index[2], df.index[19], df.index[30], df.index[49], df.index[140], df.index[163], df.index[257], df.index[276] ])
+# remove desription
+df = df.drop('DESCRIPTION', axis =1 )
+#remove size
+df = df.drop('SIZE', axis =1 )
+df
+
+#Combine Store and price
+new_date = []
+new_time = []
+col1 = []
+col2 = []
+for i in df.index:
+    new_date.append('202207257/22/22')
+    new_time.append('11:30')
+    col1.append('0')
+    col2.append('75981')
+    df['RETAIL'][i] = '34861'+ str(df['RETAIL'][i])
+df['col1'] = col1
+df['col2'] = col2
+df.insert(loc=3, column='DATE', value=new_date)
+df.insert(loc=4, column='TIME', value=new_time)  
+with open('yig.txt', 'w') as file:
+    df.to_string(file, index=False)
