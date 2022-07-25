@@ -34,7 +34,10 @@ with open('test.txt', 'w') as file:
 df.to_csv("test.csv")
     
     
-############################################################################    
+############################################################################
+
+https://www.geeksforgeeks.org/align-columns-to-left-in-pandas-python/
+############################################################################
 # Newest
 import pandas as pd
 df = pd.read_excel("YIG 861 - Balance - July 25 copy.xlsx", header = 1)
