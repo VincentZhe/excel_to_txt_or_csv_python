@@ -65,6 +65,13 @@ for i in df.index:
 df['col1'] = col1
 df['col2'] = col2
 df.insert(loc=4, column='DATE', value=new_date)
-df.insert(loc=5, column='TIME', value=new_time)  
+df.insert(loc=5, column='TIME', value=new_time)
+df_with = df.style.set_properties(**{'text-align': 'left'})
+df = df_with.data
+df
+
+# tabulate(df, showindex=False, headers=df.columns)
+# df
+
 with open('yig.txt', 'w') as file:
     df.to_string(file, index=False)
