@@ -64,7 +64,7 @@ for i in df.index:
     df['RETAIL'][i] = '34861'+ str(df['RETAIL'][i])
 df['col1'] = col1
 df['col2'] = col2
-df.insert(loc=3, column='DATE', value=new_date)
-df.insert(loc=4, column='TIME', value=new_time)  
+df.insert(loc=4, column='DATE', value=new_date)
+df.insert(loc=5, column='TIME', value=new_time)  
 with open('yig.txt', 'w') as file:
     df.to_string(file, index=False)
