@@ -66,12 +66,12 @@ df['col1'] = col1
 df['col2'] = col2
 df.insert(loc=4, column='DATE', value=new_date)
 df.insert(loc=5, column='TIME', value=new_time)
-df_with = df.style.set_properties(**{'text-align': 'left'})
-df = df_with.data
-df
 
-# tabulate(df, showindex=False, headers=df.columns)
-# df
+#Convert the all columns data type to string 
+df['FEATURE'] = df['FEATURE'].astype(str)
+df['COMMENT'] = df['COMMENT'].astype(str)
 
 with open('yig.txt', 'w') as file:
-    df.to_string(file, index=False)
+    file.write("\n".join(df["COMMENT"]))
+#     df.to_string(file, index=False)
+
